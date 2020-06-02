@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "QRLib"
-  spec.version      = "1.0.0"
+  spec.version      = "2.0.0"
   spec.summary      = "QRLib."
 
   # This description is used to generate tags and improve search results.
