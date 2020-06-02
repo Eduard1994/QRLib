@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FF4F07FC2486FAEB00DD19B9 /* QRError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4F07FB2486FAEB00DD19B9 /* QRError.swift */; };
 		FFD5F06F247F027F00DE8E35 /* QRLib.h in Headers */ = {isa = PBXBuildFile; fileRef = FFD5F06D247F027F00DE8E35 /* QRLib.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FFD5F07F247F053F00DE8E35 /* QRCodeReaderViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD5F075247F053E00DE8E35 /* QRCodeReaderViewControllerDelegate.swift */; };
 		FFD5F080247F053F00DE8E35 /* ReaderOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD5F076247F053F00DE8E35 /* ReaderOverlayView.swift */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		FF4F07FB2486FAEB00DD19B9 /* QRError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRError.swift; sourceTree = "<group>"; };
 		FFD5F06A247F027F00DE8E35 /* QRLib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = QRLib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFD5F06D247F027F00DE8E35 /* QRLib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QRLib.h; sourceTree = "<group>"; };
 		FFD5F06E247F027F00DE8E35 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -69,6 +71,7 @@
 				FFD5F079247F053F00DE8E35 /* QRCodeReader.swift */,
 				FFD5F07E247F053F00DE8E35 /* QRCodeReaderResult.swift */,
 				FFD5F078247F053F00DE8E35 /* QRCodeReaderView.swift */,
+				FF4F07FB2486FAEB00DD19B9 /* QRError.swift */,
 				FFD5F07B247F053F00DE8E35 /* QRCodeReaderViewContainer.swift */,
 				FFD5F07C247F053F00DE8E35 /* QRCodeReaderViewController.swift */,
 				FFD5F07D247F053F00DE8E35 /* QRCodeReaderViewControllerBuilder.swift */,
@@ -167,6 +170,7 @@
 				FFD5F083247F053F00DE8E35 /* QRCodeReader.swift in Sources */,
 				FFD5F087247F053F00DE8E35 /* QRCodeReaderViewControllerBuilder.swift in Sources */,
 				FFD5F088247F053F00DE8E35 /* QRCodeReaderResult.swift in Sources */,
+				FF4F07FC2486FAEB00DD19B9 /* QRError.swift in Sources */,
 				FFD5F085247F053F00DE8E35 /* QRCodeReaderViewContainer.swift in Sources */,
 				FFD5F081247F053F00DE8E35 /* SwitchCameraButton.swift in Sources */,
 				FFD5F086247F053F00DE8E35 /* QRCodeReaderViewController.swift in Sources */,

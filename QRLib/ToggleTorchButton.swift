@@ -28,23 +28,23 @@ public final class ToggleTorchButton: UIButton {
     
     public override func draw(_ rect: CGRect) {
         // Colors
-        let paintColor  = (self.state != .highlighted) ? fillColor : fillHighlightedColor
+        let paintColor = (self.state != .highlighted) ? fillColor : fillHighlightedColor
         let strokeColor = (self.state != .highlighted) ? edgeColor : edgeHighlightedColor
         
-        let width   = rect.width
-        let height  = rect.height
+        let width = rect.width
+        let height = rect.height
         let centerX = width / 2
         let centerY = height / 2
         
         let strokeLineWidth: CGFloat = 2
-        let circleRadius: CGFloat    = width / 10
-        let lineLength: CGFloat      = width / 10
-        let lineOffset: CGFloat      = width / 10
-        let lineOriginFromCenter     = circleRadius + lineOffset
+        let circleRadius: CGFloat = width / 10
+        let lineLength: CGFloat = width / 10
+        let lineOffset: CGFloat = width / 10
+        let lineOriginFromCenter = circleRadius + lineOffset
         
         //Circle
         let circlePath = UIBezierPath()
-        let center     = CGPoint(x: centerX, y: centerY)
+        let center = CGPoint(x: centerX, y: centerY)
         circlePath.addArc(withCenter: center, radius: circleRadius, startAngle: 0.0, endAngle: CGFloat(Double.pi), clockwise: true)
         circlePath.addArc(withCenter: center, radius: circleRadius, startAngle: CGFloat(Double.pi), endAngle: CGFloat(Double.pi * 2), clockwise: true)
         

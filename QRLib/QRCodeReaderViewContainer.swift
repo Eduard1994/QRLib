@@ -47,7 +47,7 @@ public struct QRCodeReaderContainer {
      - Parameter displayable: An UIView conforms to the `QRCodeReaderDisplayable` protocol.
      */
     public init<T: QRCodeReaderDisplayable>(displayable: T) where T: UIView {
-        self.view        = displayable
+        self.view = displayable
         self.displayable = displayable
     }
     

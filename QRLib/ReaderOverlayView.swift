@@ -27,13 +27,13 @@ public protocol QRCodeReaderViewOverlay: UIView {
 /// Overlay over the camera view to display the area (a square) where to scan the code.
 public final class ReaderOverlayView: UIView {
     private var overlay: CAShapeLayer = {
-        var overlay             = CAShapeLayer()
+        var overlay = CAShapeLayer()
         overlay.backgroundColor = UIColor.clear.cgColor
-        overlay.fillColor       = UIColor.clear.cgColor
-        overlay.strokeColor     = UIColor.white.cgColor
-        overlay.lineWidth       = 3
+        overlay.fillColor = UIColor.clear.cgColor
+        overlay.strokeColor = UIColor.white.cgColor
+        overlay.lineWidth = 3
         overlay.lineDashPattern = [7.0, 7.0]
-        overlay.lineDashPhase   = 0
+        overlay.lineDashPhase = 0
         
         return overlay
     }()

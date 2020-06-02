@@ -174,13 +174,31 @@ final public class QRCodeReaderView: UIView, QRCodeReaderDisplayable {
             setNeedsUpdateOrientation()
         }
     }
+    
+    private func handleError(error: QRError) {
+        switch error {
+        case .timeout:
+            print(error.localizedDescription)
+            if let reader = self.reader {
+                let ac = UIAlertController(title: "Error", message: "\(error.localizedDescription): Could not find QR Code in \(reader.timeout) seconds", preferredStyle: .alert)
+                ac.addAction(UIAlertAction(title: "Rescan", style: .default, handler: { _ in
+                    reader.startScanning(with: Int64(reader.timeout))
+                }))
+                self.window?.rootViewController?.present(ac, animated: true, completion: nil)
+            }
+        case .unowned(description: let descr):
+            print(descr)
+        }
+    }
 }
 
 extension QRCodeReaderView: QRCodeReaderLifeCycleDelegate {
+    func readerDidStopScanning(error: QRError) {
+        handleError(error: error)
+    }
+    
     func readerDidStartScanning() {
         setNeedsUpdateOrientation()
     }
-    
-    func readerDidStopScanning() {}
 }
 

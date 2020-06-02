@@ -6,7 +6,7 @@
 //  Copyright © 2020 Eduard Shahnazaryan. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 /**
  The result of the scan with its content value and the corresponding metadata type.
@@ -21,5 +21,13 @@ public struct QRCodeReaderResult {
      The type of the metadata.
      */
     public let metadataType: String
+    
+}
+
+public struct QRCodeReaderImageResult {
+    /*
+     The type of the image.
+    */
+    public let image: UIImage
 }
 

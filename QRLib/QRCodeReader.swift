@@ -11,13 +11,13 @@ import AVFoundation
 
 protocol QRCodeReaderLifeCycleDelegate: class {
     func readerDidStartScanning()
-    func readerDidStopScanning()
+    func readerDidStopScanning(error: QRError)
 }
 
 /// Reader object base on the `AVCaptureDevice` to read / scan 1D and 2D codes.
 public final class QRCodeReader: NSObject, AVCaptureMetadataOutputObjectsDelegate {
     private let sessionQueue = DispatchQueue(label: "session queue")
-    private let metadataObjectsQueue = DispatchQueue(label: "com.yannickloriot.qr", attributes: [], target: nil)
+    private let metadataObjectsQueue = DispatchQueue(label: "com.eduardshahnazaryan.qrlib", attributes: [], target: nil)
     
     let defaultDevice: AVCaptureDevice? = AVCaptureDevice.default(for: .video)
     let frontDevice: AVCaptureDevice?   = {
@@ -55,6 +55,7 @@ public final class QRCodeReader: NSObject, AVCaptureMetadataOutputObjectsDelegat
     weak var lifeCycleDelegate: QRCodeReaderLifeCycleDelegate?
     
     // MARK: - Managing the Properties
+    // Image output
     
     /// CALayer that you use to display video as it is being captured by an input device.
     public let previewLayer: AVCaptureVideoPreviewLayer
@@ -63,12 +64,17 @@ public final class QRCodeReader: NSObject, AVCaptureMetadataOutputObjectsDelegat
     public let metadataObjectTypes: [AVMetadataObject.ObjectType]
     
     // MARK: - Managing the Code Discovery
-    
+
+    /// Timeout
+    public var timeout: Int = 5
     /// Flag to know whether the scanner should stop scanning when a code is found.
     public var stopScanningWhenCodeIsFound: Bool = true
     
     /// Block is executed when a metadata object is found.
     public var didFindCode: ((QRCodeReaderResult) -> Void)?
+    
+    /// Capturing image when a metadata object is found
+    public var didCapturedImage: ((QRCodeReaderImageResult) -> Void)?
     
     /// Block is executed when a found metadata object string could not be decoded.
     public var didFailDecoding: (() -> Void)?
@@ -180,7 +186,7 @@ public final class QRCodeReader: NSObject, AVCaptureMetadataOutputObjectsDelegat
      
      *Notes: if `stopScanningWhenCodeIsFound` is sets to true (default behaviour), each time the scanner found a code it calls the `stopScanning` method.*
      */
-    public func startScanning() {
+    public func startScanning(with timeout: Int64 = 10) {
         sessionQueue.async {
             guard !self.session.isRunning else { return }
             
@@ -188,6 +194,10 @@ public final class QRCodeReader: NSObject, AVCaptureMetadataOutputObjectsDelegat
             
             DispatchQueue.main.async {
                 self.lifeCycleDelegate?.readerDidStartScanning()
+            }
+            let timer = DispatchTime.now() + Double(Int64(timeout))
+            DispatchQueue.main.asyncAfter(deadline: timer) {
+                self.stopScanning()
             }
         }
     }
@@ -200,7 +210,7 @@ public final class QRCodeReader: NSObject, AVCaptureMetadataOutputObjectsDelegat
             self.session.stopRunning()
             
             DispatchQueue.main.async {
-                self.lifeCycleDelegate?.readerDidStopScanning()
+                self.lifeCycleDelegate?.readerDidStopScanning(error: .timeout)
             }
         }
     }
@@ -244,8 +254,7 @@ public final class QRCodeReader: NSObject, AVCaptureMetadataOutputObjectsDelegat
             defaultDevice?.torchMode = defaultDevice?.torchMode == .on ? .off : .on
             
             defaultDevice?.unlockForConfiguration()
-        }
-        catch _ { }
+        } catch _ { }
     }
     
     // MARK: - Managing the Orientation
@@ -372,11 +381,17 @@ public final class QRCodeReader: NSObject, AVCaptureMetadataOutputObjectsDelegat
                                 weakSelf.session.stopRunning()
                                 
                                 DispatchQueue.main.async {
-                                    weakSelf.lifeCycleDelegate?.readerDidStopScanning()
+                                    weakSelf.lifeCycleDelegate?.readerDidStopScanning(error: .unowned(description: ""))
                                 }
                             }
                             
                             let scannedResult = QRCodeReaderResult(value: sVal, metadataType:_readableCodeObject.type.rawValue)
+//                            let photoSettings = AVCapturePhotoSettings()
+//
+//                            if !weakSelf.isCapturing {
+//                                weakSelf.isCapturing = true
+//                                weakSelf.photoOutput.capturePhoto(with: photoSettings, delegate: weakSelf)
+//                            }
                             
                             DispatchQueue.main.async {
                                 weakSelf.didFindCode?(scannedResult)
@@ -390,5 +405,28 @@ public final class QRCodeReader: NSObject, AVCaptureMetadataOutputObjectsDelegat
             }
         }
     }
+    
+    
+//    // MARK: - AVCapturePhotoCaptureDelegate Methods
+//    public func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
+//        isCapturing = false
+//
+//        guard let imageData = photo.fileDataRepresentation() else {
+//            print("Error while generating image from photocapture data.")
+//            return
+//        }
+//
+//        guard let qrImage = UIImage(data: imageData) else {
+//            print("Unable to generate UIImage from image data.")
+//            return
+//        }
+//
+//        let imageResult = QRCodeReaderImageResult(image: qrImage)
+//
+//        DispatchQueue.main.async {
+//            print("Image Result: \(imageResult)")
+//            self.didCapturedImage?(imageResult)
+//        }
+//    }
 }
 
